@@ -1,17 +1,17 @@
 const host = function() {
-  return process.env.HOST;
+  return process.env.HOST || "localhost";
 }
 
 const username = function() {
-  return process.env.DATABASE_USER;
+  return process.env.DATABASE_USER || "postgres";
 }
 
 const password = function() {
-  return process.env.DATABASE_PASSWORD;
+  return process.env.DATABASE_PASSWORD  || "postgres";
 }
 
 const db_name = function() {
-  return process.env.DATABASE_NAME;
+  return process.env.DATABASE_NAME || "default";
 }
 
 const config = {
