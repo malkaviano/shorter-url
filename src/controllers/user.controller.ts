@@ -8,12 +8,12 @@ export class UserController {
 
     @Delete(':userId')
     public async deleteUser(@Param('userId') userId: string) {
-        const result = await this.service.deleteUser(userId)
+        const user = await this.service.getUser(userId);
 
-        if (result) {
-            return { status: 'deleted' };
+        if (!user) {
+            throw new NotFoundException();
         }
 
-        throw new NotFoundException();
+        await this.service.deleteUser(userId);
     }
 }
