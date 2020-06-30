@@ -74,4 +74,8 @@ export class UrlService {
 
         return Object.assign(r, { topUrls: urls });
     }
+
+    public async saveUrl(url: Url): Promise<Url> {
+        return await this.repository.save(url);
+    }
 }

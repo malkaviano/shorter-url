@@ -23,6 +23,10 @@ export class UrlsController {
         const url = await this.urlService.getUrl(id);
 
         if(url) {
+            url.hits += 1;
+
+            await this.urlService.saveUrl(url);
+
             return { url: url.url };
         }
 
