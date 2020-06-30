@@ -38,6 +38,6 @@ Build the container
 
 Running the container built, change HOST IP to the IP of the DB. You can figure it out using docker network inspect bridge
 
-- docker run --rm --name shorter -p 8500:8500 -e 'HOST=172.17.0.2' -d shorter npm run migration:run && npm run start:prod
+- docker run --rm --name shorter -p 8500:8500 -e 'HOST=172.17.0.2' -d shorter
 
 Connect to the port 8500 (default).
