@@ -16,6 +16,6 @@ export class Url {
     @Column()
     hits: number;
 
-    @ManyToOne(type => User, user => user.urls)
+    @ManyToOne(type => User, user => user.urls, {onDelete:'CASCADE'})
     user: User;
 }
