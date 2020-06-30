@@ -1,4 +1,4 @@
-import { Controller, Delete, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Delete, Param, NotFoundException, Get, Redirect } from '@nestjs/common';
 
 import { UrlService } from '../services/url.service';
 
@@ -15,5 +15,17 @@ export class UrlsController {
         }
 
         await this.urlService.deleteUrl(id);
+    }
+
+    @Get(':id')
+    @Redirect('https://nestjs.com', 301)
+    public async accessUrl(@Param('id') id: number) {
+        const url = await this.urlService.getUrl(id);
+
+        if(url) {
+            return { url: url.url };
+        }
+
+        throw new NotFoundException();
     }
 }
