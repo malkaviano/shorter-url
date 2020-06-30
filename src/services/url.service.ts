@@ -36,12 +36,28 @@ export class UrlService {
                                     .getMany();
 
         const r = await this.repository.createQueryBuilder('url')
-                                    .select('SUM(hits)', "hits")
+                                    .select('COALESCE(SUM(hits), 0)', "hits")
                                     .addSelect('COUNT(*)', "urlCount")
                                     .where('"userId" = :id')
                                     .setParameters({ id: user.id })
                                     .getRawOne();
 
         return Object.assign(r, { topUrls: urls });
+    }
+
+    public async getUrl(id: number): Promise<Url> {
+        return await this.repository.findOne(id);
+    }
+
+    public async deleteUrl(id: number): Promise<boolean> {
+        const url = this.getUrl(id);
+
+        if (url) {
+            await this.repository.delete(id);
+
+            return true;
+        }
+
+        return false;
     }
 }
