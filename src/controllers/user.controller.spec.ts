@@ -36,7 +36,7 @@ describe('User Controller', () => {
   describe('#deleteUser', () => {
     describe('when user is found', () => {
       it('returns { status: "deleted" }', async () => {
-        await expect(controller.deleteUser('xpto')).resolves.toEqual({ status: 'deleted ' });
+        await expect(controller.deleteUser('xpto')).resolves.toEqual({ status: 'deleted' });
       });
     });
 

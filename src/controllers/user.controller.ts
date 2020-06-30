@@ -11,7 +11,7 @@ export class UserController {
         const result = await this.service.deleteUser(userId)
 
         if (result) {
-            return { status: 'deleted ' };
+            return { status: 'deleted' };
         }
 
         throw new NotFoundException();

@@ -17,7 +17,7 @@ describe('UserService', () => {
       providers: [
         UserService,
         {
-          provide: getRepositoryToken(UserRepository),
+          provide: UserRepository,
           useValue: repository,
         },
       ],
@@ -73,6 +73,53 @@ describe('UserService', () => {
         );
 
         await expect(service.deleteUser('throws')).resolves.toEqual(false);
+      });
+    });
+  });
+
+  describe('#getUser', () => {
+    describe('when user exists', () => {
+      it('returns user', async () => {
+        when(mockedUserRepository.findOne(anything(), anything())).thenResolve(
+          {
+            id: 1,
+            userId: 'someuser',
+            urls: []
+          }
+        );
+
+        await expect(service.getUser('someuser')).resolves.toEqual({
+          id: 1,
+          userId: 'someuser',
+          urls: []
+        });
+      });
+    });
+  });
+
+  describe('#createUser', () => {
+    describe('when user exists', () => {
+      it('throws', async () => {
+        when(mockedUserRepository.save(anything())).thenReject(
+          new Error("user already exists")
+        );
+
+        await expect(service.createUser('someuser')).rejects.toThrow();
+      });
+    });
+
+    describe('when new user', () => {
+      it('throws', async () => {
+        when(mockedUserRepository.save(anything())).thenResolve(
+          {
+            id: 1,
+            userId: 'someuser'
+          }
+        );
+
+        await expect(service.createUser('someuser')).resolves.toEqual({
+          userId: 'someuser'
+        });
       });
     });
   });
