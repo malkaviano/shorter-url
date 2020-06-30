@@ -37,6 +37,10 @@ export class UsersController {
         const user = await this.userService.getUser(userId);
         const shortUrl = 'abcdefgh';
 
-        return await this.urlService.createUrl(user, urlInput.url, shortUrl);
+        if (user) {
+            return await this.urlService.createUrl(user, urlInput.url, shortUrl);
+        }
+
+        throw new NotFoundException();
     }
 }
