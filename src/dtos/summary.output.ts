@@ -1,4 +1,4 @@
-export interface UserSummary {
+export interface Summary {
     topUrls: number;
     hits: number;
     urlCount: number;

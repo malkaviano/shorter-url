@@ -5,7 +5,7 @@ import { UrlRepository } from '../repositories/url.repository';
 import { Url } from '../entities/url.entity';
 import { User } from '../entities/user.entity';
 import { UrlOutput } from '../dtos/url.output';
-import { UserSummary } from '../dtos/user.summary';
+import { Summary } from '../dtos/summary.output';
 
 @Injectable()
 export class UrlService {
@@ -27,7 +27,7 @@ export class UrlService {
         return result;
     }
 
-    public async getSummaryByUser(user: User, limit: number = 10): Promise<UserSummary> {
+    public async getSummaryByUser(user: User, limit: number = 10): Promise<Summary> {
         const urls = await this.repository.createQueryBuilder('url')
                                     .where('"userId" = :id')
                                     .orderBy('url.hits', "DESC")
@@ -59,5 +59,19 @@ export class UrlService {
         }
 
         return false;
+    }
+
+    public async getSummary(limit: number = 10): Promise<Summary> {
+        const urls = await this.repository.createQueryBuilder('url')
+                                    .orderBy('url.hits', "DESC")
+                                    .take(limit)
+                                    .getMany();
+
+        const r = await this.repository.createQueryBuilder('url')
+                                    .select('COALESCE(SUM(hits), 0)', "hits")
+                                    .addSelect('COUNT(*)', "urlCount")
+                                    .getRawOne();
+
+        return Object.assign(r, { topUrls: urls });
     }
 }
