@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { Length } from 'class-validator';
 
-export class UserUrlInput {
+export class UrlInput {
     @ApiProperty()
     @Length(5, 250)
     url: string;

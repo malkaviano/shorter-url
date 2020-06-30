@@ -8,10 +8,10 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('UserService', () => {
   let service: UserService;
-  let mockedUserRepository: UserRepository = mock(UserRepository);
+  let mockedRepository: UserRepository = mock(UserRepository);
 
   beforeEach(async () => {
-    let repository: UserRepository = instance(mockedUserRepository);
+    let repository: UserRepository = instance(mockedRepository);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -33,7 +33,7 @@ describe('UserService', () => {
   describe('#deleteUser', () => {
     describe('when user is found', () => {
       it('returns true', async () => {
-        when(mockedUserRepository.delete(anything())).thenResolve(
+        when(mockedRepository.delete(anything())).thenResolve(
           {
             raw: [],
             affected: 1
@@ -46,7 +46,7 @@ describe('UserService', () => {
 
     describe('when user is not found', () => {
       it('returns false', async () => {
-        when(mockedUserRepository.delete(anything())).thenResolve(
+        when(mockedRepository.delete(anything())).thenResolve(
           {
             raw: [],
             affected: 0
@@ -57,7 +57,7 @@ describe('UserService', () => {
       });
 
       it('returns false', async () => {
-        when(mockedUserRepository.delete(anything())).thenResolve(
+        when(mockedRepository.delete(anything())).thenResolve(
           {
             raw: [],
             affected: null,
@@ -68,7 +68,7 @@ describe('UserService', () => {
       });
 
       it('returns false', async () => {
-        when(mockedUserRepository.delete(anything())).thenReject(
+        when(mockedRepository.delete(anything())).thenReject(
           new Error("something went wrong")
         );
 
@@ -80,7 +80,7 @@ describe('UserService', () => {
   describe('#getUser', () => {
     describe('when user exists', () => {
       it('returns user', async () => {
-        when(mockedUserRepository.findOne(anything(), anything())).thenResolve(
+        when(mockedRepository.findOne(anything(), anything())).thenResolve(
           {
             id: 1,
             userId: 'someuser',
@@ -100,7 +100,7 @@ describe('UserService', () => {
   describe('#createUser', () => {
     describe('when user exists', () => {
       it('throws', async () => {
-        when(mockedUserRepository.save(anything())).thenReject(
+        when(mockedRepository.save(anything())).thenReject(
           new Error("user already exists")
         );
 
@@ -110,7 +110,7 @@ describe('UserService', () => {
 
     describe('when new user', () => {
       it('throws', async () => {
-        when(mockedUserRepository.save(anything())).thenResolve(
+        when(mockedRepository.save(anything())).thenResolve(
           {
             id: 1,
             userId: 'someuser'
