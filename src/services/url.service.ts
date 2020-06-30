@@ -10,9 +10,7 @@ import { UrlOutput } from '../dtos/url.output';
 export class UrlService {
     constructor(@InjectRepository(UrlRepository) private readonly repository: UrlRepository) { }
 
-    public async createUrl(user: User, url: string): Promise<UrlOutput> {
-        const shortUrl = 'abcdefgh';
-
+    public async createUrl(user: User, url: string, shortUrl: string): Promise<UrlOutput> {
         const result = await this.repository.save(Object.assign(
             new Url(),
             {

@@ -35,7 +35,8 @@ export class UsersController {
     @Post(':userId/urls')
     public async addUrls(@Param('userId') userId: string, @Body() urlInput: UrlInput) {
         const user = await this.userService.getUser(userId);
+        const shortUrl = 'abcdefgh';
 
-        return await this.urlService.createUrl(user, urlInput.url);
+        return await this.urlService.createUrl(user, urlInput.url, shortUrl);
     }
 }
