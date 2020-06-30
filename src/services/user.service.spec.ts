@@ -69,7 +69,7 @@ describe('UserService', () => {
 
       it('returns false', async () => {
         when(mockedRepository.delete(anything())).thenReject(
-          new Error("something went wrong")
+          new Error("something went wrong FDP")
         );
 
         await expect(service.deleteUser('throws')).resolves.toEqual(false);
@@ -80,7 +80,7 @@ describe('UserService', () => {
   describe('#getUser', () => {
     describe('when user exists', () => {
       it('returns user', async () => {
-        when(mockedRepository.findOne(anything(), anything())).thenResolve(
+        when(mockedRepository.findOne(anything())).thenResolve(
           {
             id: 1,
             userId: 'someuser',

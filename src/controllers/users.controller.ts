@@ -12,17 +12,6 @@ export class UsersController {
         private readonly urlService: UrlService,
     ) { }
 
-    @Get(':userId/stats')
-    public async userStats(@Param('userId') userId: string) {
-        const user = await this.userService.getUser(userId);
-
-        if (user) {
-            return user;
-        }
-
-        throw new NotFoundException();
-    }
-
     @Post()
     public async createUser(@Body() userInput: UserInput) {
         try {
@@ -42,5 +31,23 @@ export class UsersController {
         }
 
         throw new NotFoundException();
+    }
+
+    @Get(':userId/stats')
+    public async userStats(@Param('userId') userId: string) {
+        const user = await this.userService.getUser(userId);
+
+        if (!user) {
+            throw new NotFoundException();
+        }
+
+        const { topUrls, hits, urlCount } = await this.urlService.getSummaryByUser(user);
+
+        return {
+            userId,
+            hits,
+            urlCount,
+            topUrls
+        };
     }
 }

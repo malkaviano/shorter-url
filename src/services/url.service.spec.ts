@@ -4,7 +4,6 @@ import { mock, instance, when, anything } from 'ts-mockito';
 
 import { UrlService } from './url.service';
 import { UrlRepository } from '../repositories/url.repository';
-import { Url } from '../entities/url.entity';
 import { User } from '../entities/user.entity';
 
 describe('UrlService', () => {

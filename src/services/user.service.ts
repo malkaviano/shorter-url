@@ -10,7 +10,7 @@ export class UserService {
     constructor(@InjectRepository(UserRepository) private readonly repository: UserRepository) { }
 
     public async getUser(userId: string): Promise<User> {
-        return this.repository.findOne({ userId }, { relations: ['urls'] });
+        return this.repository.findOne({ userId });
     }
 
     public async deleteUser(userId: string): Promise<boolean> {
@@ -19,7 +19,6 @@ export class UserService {
 
             return !!affected
         } catch (error) {
-            console.error(error);
             return false;
         }
 
