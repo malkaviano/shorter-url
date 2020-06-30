@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { when, mock, instance, anyString, anything } from 'ts-mockito';
+import { when, mock, instance, anything } from 'ts-mockito';
 
 import { UserService } from './user.service';
-import { UserRepository } from './user.repository';
+import { UserRepository } from '../repositories/user.repository';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('UserService', () => {

@@ -3,9 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { mock, instance, when } from 'ts-mockito';
 
 import { UserController } from './user.controller';
-import { UserService } from './user.service';
-import { DeleteResult } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
+import { UserService } from '../services/user.service';
 
 describe('User Controller', () => {
   let controller: UserController;
