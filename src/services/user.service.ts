@@ -19,6 +19,7 @@ export class UserService {
 
             return !!affected
         } catch (error) {
+            console.error(error);
             return false;
         }
 

@@ -4,13 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserController } from '../controllers/user.controller';
 import { UserService } from '../services/user.service';
 import { UserRepository } from '../repositories/user.repository';
-import { UsersController } from '../users/users.controller';
-import { UrlService } from '../services/url.service';
-import { UrlRepository } from '../repositories/url.repository';
+import { UsersController } from '../controllers/users.controller';
+import { UrlModule } from './url.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserRepository, UrlRepository])],
+  imports: [TypeOrmModule.forFeature([UserRepository]), UrlModule],
   controllers: [UserController, UsersController],
-  providers: [UserService, UrlService],
+  providers: [UserService],
 })
 export class UserModule {}
