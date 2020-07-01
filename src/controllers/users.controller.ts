@@ -24,10 +24,18 @@ export class UsersController {
     @Post(':userId/urls')
     public async addUrls(@Param('userId') userId: string, @Body() urlInput: UrlInput) {
         const user = await this.userService.getUser(userId);
-        const shortUrl = 'abcdefgh';
 
         if (user) {
-            return await this.urlService.createUrl(user, urlInput.url, shortUrl);
+            const shortUrl = `https://xpto.com/${this.urlService.shortUrl(urlInput.url)}`;
+
+            while(true) {
+                try {
+                    return await this.urlService.createUrl(user, urlInput.url, shortUrl);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
         }
 
         throw new NotFoundException();

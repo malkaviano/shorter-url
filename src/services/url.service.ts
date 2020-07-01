@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 import { UrlRepository } from '../repositories/url.repository';
 import { Url } from '../entities/url.entity';
@@ -77,5 +78,11 @@ export class UrlService {
 
     public async saveUrl(url: Url): Promise<Url> {
         return await this.repository.save(url);
+    }
+
+    public shortUrl(url: string): string {
+        var segment = uuidv4();
+
+        return segment.substring(0, 8);
     }
 }

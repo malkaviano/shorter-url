@@ -8,7 +8,7 @@ export class User {
   id: number;
 
   @Index({ unique: true })
-  @Column({ length: '10' })
+  @Column({ nullable: false, length: '10' })
   userId: string;
 
   @OneToMany(type => Url, url => url.user)

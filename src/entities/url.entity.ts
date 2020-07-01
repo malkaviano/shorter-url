@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Index } from 'typeorm';
 
 import { User } from './user.entity'
 
@@ -7,15 +7,16 @@ export class Url {
     @PrimaryGeneratedColumn({ type: 'bigint' })
     id: number;
 
-    @Column({ length: '250' })
+    @Column({ nullable: false, length: '250' })
     url: string;
 
-    @Column({ length: '20' })
+    @Index({ unique: true })
+    @Column({ nullable: false, length: '50' })
     shortUrl: string;
 
-    @Column()
+    @Column({ nullable: false })
     hits: number;
 
-    @ManyToOne(type => User, user => user.urls, {onDelete:'CASCADE'})
+    @ManyToOne(type => User, user => user.urls, { nullable: false, onDelete:'CASCADE' })
     user: User;
 }
