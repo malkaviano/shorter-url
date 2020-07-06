@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 
 import { Url } from '../entities/url.entity';
 import { User } from '../entities/user.entity';
@@ -7,10 +6,14 @@ import { UrlOutput } from '../dtos/url.output';
 import { SummaryOutput } from '../dtos/summary.output';
 import { RepositoryService } from './repository.service';
 import { UrlSingleOutput } from '../dtos/url-single.output';
+import { ShortenerService } from './shortener.service';
 
 @Injectable()
 export class UrlService {
-    constructor(private readonly repository: RepositoryService) { }
+    constructor(
+        private readonly repository: RepositoryService,
+        private readonly shortner: ShortenerService,
+    ) { }
 
     public async createUrl(user: User, url: string): Promise<UrlOutput> {
         const obj: Url = {
@@ -24,7 +27,7 @@ export class UrlService {
         let result = null;
 
         while (!result) {
-            obj.shortUrl = `https://xpto.com/${this.shortUrl()}`;
+            obj.shortUrl = `https://xpto.com/${this.shortner.generateSegment(url)}`;
 
             result = await this.repository.saveUrl(obj);
         }
@@ -81,11 +84,5 @@ export class UrlService {
 
     public getSummary(limit: number = 10): Promise<SummaryOutput> {
         return this.repository.urlSummary(limit);
-    }
-
-    public shortUrl(): string {
-        var segment = uuidv4();
-
-        return segment.substring(0, 8);
     }
 }
