@@ -1,24 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { mock, instance, when, anything } from 'ts-mockito';
+import { mock, instance, when } from 'ts-mockito';
 
 import { UrlService } from './url.service';
-import { UrlRepository } from '../repositories/url.repository';
 import { User } from '../entities/user.entity';
+import { RepositoryService } from './repository.service';
+import { Url } from '../entities/url.entity';
+import { UrlOutput } from '../dtos/url.output';
 
 describe('UrlService', () => {
   let service: UrlService;
-  let mockedRepository: UrlRepository = mock(UrlRepository);
+  let mockedRepository: RepositoryService = mock(RepositoryService);
 
   beforeEach(async () => {
-    let repository: UrlRepository = instance(mockedRepository);
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UrlService,
         {
-          provide: UrlRepository,
-          useValue: repository,
+          provide: RepositoryService,
+          useValue: instance(mockedRepository),
         },
       ],
     }).compile();
@@ -32,25 +32,25 @@ describe('UrlService', () => {
 
   describe('#createUrl', () => {
     it('returns Url created', async () => {
-        when(mockedRepository.save(anything())).thenResolve(
-          {
-            id: 1,
-            url: 'http://xpto.com/blahblahblah',
-            shortUrl: 'http://xpto.com/blah',
-            hits: 0,
-            user: new User()
-          }
-        );
+        const obj: Url = {
+          id: 0,
+          url: 'http://xpto.com/blahblahblah',
+          shortUrl: 'http://xpto.com/blah',
+          hits: 0,
+          user: new User()
+        };
 
-        await expect(service.createUrl(new User(), 'http://xpto.com/blahblahblah', 'http://xpto.com/blah'))
-          .resolves.toEqual(
-          {
-            id: 1,
-            url: 'http://xpto.com/blahblahblah',
-            shortUrl: 'http://xpto.com/blah',
-            hits: 0,
-          }
-        )
+        const expected: UrlOutput = {
+          id: 1,
+          url: 'http://xpto.com/blahblahblah',
+          shortUrl: 'http://xpto.com/blah',
+          hits: 0
+        };
+
+        when(mockedRepository.saveUrl(obj)).thenResolve(expected);
+
+        await expect(service.createUrl(new User(), 'http://xpto.com/blahblahblah'))
+          .resolves.toEqual(expected);
     });
   });
 });

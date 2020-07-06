@@ -8,28 +8,22 @@ export class UrlsController {
 
     @Delete(':id')
     public async deleteUrl(@Param('id') id: number) {
-        const url = await this.urlService.getUrl(id);
+        const result = await this.urlService.deleteUrl(id);
 
-        if (!url) {
+        if (!result) {
             throw new NotFoundException();
         }
-
-        await this.urlService.deleteUrl(id);
     }
 
     @Get(':id')
     @Redirect('https://nestjs.com', 301)
     public async accessUrl(@Param('id') id: number) {
-        const url = await this.urlService.getUrl(id);
+        const result = await this.urlService.hitUrl(id);
 
-        if(url) {
-            url.hits += 1;
-
-            await this.urlService.saveUrl(url);
-
-            return { url: url.url };
+        if (!result) {
+            throw new NotFoundException();
         }
 
-        throw new NotFoundException();
+        return result;
     }
 }

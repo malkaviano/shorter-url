@@ -69,7 +69,7 @@ describe('UserService', () => {
 
       it('returns false', async () => {
         when(mockedRepository.delete(anything())).thenReject(
-          new Error("something went wrong FDP")
+          new Error("something went wrong")
         );
 
         await expect(service.deleteUser('throws')).resolves.toEqual(false);

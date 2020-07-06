@@ -3,10 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UrlsController } from '../controllers/urls.controller';
 import { UrlService } from '../services/url.service';
-import { UrlRepository } from '../repositories/url.repository';
+import { RepositoryModule } from './repository.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UrlRepository])],
+  imports: [RepositoryModule],
   controllers: [UrlsController],
   providers: [UrlService],
   exports:[UrlService],

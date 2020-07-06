@@ -1,86 +1,89 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { UrlRepository } from '../repositories/url.repository';
 import { Url } from '../entities/url.entity';
 import { User } from '../entities/user.entity';
 import { UrlOutput } from '../dtos/url.output';
-import { Summary } from '../dtos/summary.output';
+import { SummaryOutput } from '../dtos/summary.output';
+import { RepositoryService } from './repository.service';
+import { UrlSingleOutput } from '../dtos/url-single.output';
 
 @Injectable()
 export class UrlService {
-    constructor(@InjectRepository(UrlRepository) private readonly repository: UrlRepository) { }
+    constructor(private readonly repository: RepositoryService) { }
 
-    public async createUrl(user: User, url: string, shortUrl: string): Promise<UrlOutput> {
-        const result = await this.repository.save(Object.assign(
-            new Url(),
-            {
-                user,
-                url,
-                shortUrl,
-                hits: 0,
-            },
-        ));
+    public async createUrl(user: User, url: string): Promise<UrlOutput> {
+        const obj: Url = {
+            id: 0,
+            user,
+            url,
+            shortUrl: null,
+            hits: 0,
+        };
 
-        delete result.user;
+        let result = null;
+
+        while (!result) {
+            obj.shortUrl = `https://xpto.com/${this.shortUrl()}`;
+
+            result = await this.repository.saveUrl(obj);
+        }
 
         return result;
     }
 
-    public async getSummaryByUser(user: User, limit: number = 10): Promise<Summary> {
-        const urls = await this.repository.createQueryBuilder('url')
-                                    .where('"userId" = :id')
-                                    .orderBy('url.hits', "DESC")
-                                    .take(limit)
-                                    .setParameters({ id: user.id })
-                                    .getMany();
+    public async getSummaryByUser(user: User, limit: number = 10): Promise<SummaryOutput | { error: any }> {
+        try {
+            const { topUrls, hits, urlCount } = await this.repository.userSummary(user.id, limit);
 
-        const r = await this.repository.createQueryBuilder('url')
-                                    .select('COALESCE(SUM(hits), 0)', "hits")
-                                    .addSelect('COUNT(*)', "urlCount")
-                                    .where('"userId" = :id')
-                                    .setParameters({ id: user.id })
-                                    .getRawOne();
-
-        return Object.assign(r, { topUrls: urls });
+            return {
+                userId: user.userId,
+                hits,
+                urlCount,
+                topUrls
+            };
+        } catch (error) {
+            return { error };
+        }
     }
 
     public async getUrl(id: number): Promise<Url> {
-        return await this.repository.findOne(id);
+        try {
+            return await this.repository.getUrl(id);
+        } catch (error) {
+            return null;
+        }
+    }
+
+    public async hitUrl(id: number): Promise<UrlSingleOutput> {
+        const url = await this.repository.getUrl(id);
+
+        if (!url) {
+            return null;
+        }
+
+        url.hits += 1;
+
+        await this.repository.saveUrl(url);
+
+        return { url: url.url };
     }
 
     public async deleteUrl(id: number): Promise<boolean> {
-        const url = this.getUrl(id);
+        const url = await this.getUrl(id);
 
-        if (url) {
-            await this.repository.delete(id);
-
-            return true;
+        if (!url) {
+            return false;
         }
 
-        return false;
+        return await this.repository.deleteUrl(id);
     }
 
-    public async getSummary(limit: number = 10): Promise<Summary> {
-        const urls = await this.repository.createQueryBuilder('url')
-                                    .orderBy('url.hits', "DESC")
-                                    .take(limit)
-                                    .getMany();
-
-        const r = await this.repository.createQueryBuilder('url')
-                                    .select('COALESCE(SUM(hits), 0)', "hits")
-                                    .addSelect('COUNT(*)', "urlCount")
-                                    .getRawOne();
-
-        return Object.assign(r, { topUrls: urls });
+    public getSummary(limit: number = 10): Promise<SummaryOutput> {
+        return this.repository.urlSummary(limit);
     }
 
-    public async saveUrl(url: Url): Promise<Url> {
-        return await this.repository.save(url);
-    }
-
-    public shortUrl(url: string): string {
+    public shortUrl(): string {
         var segment = uuidv4();
 
         return segment.substring(0, 8);

@@ -14,31 +14,24 @@ export class UsersController {
 
     @Post()
     public async createUser(@Body() userInput: UserInput) {
-        try {
-            return await this.userService.createUser(userInput.userId);
-        } catch (error) {
+        const user = await this.userService.createUser(userInput.userId);
+
+        if (!user) {
             throw new ConflictException();
         }
+
+        return user;
     }
 
     @Post(':userId/urls')
     public async addUrls(@Param('userId') userId: string, @Body() urlInput: UrlInput) {
         const user = await this.userService.getUser(userId);
 
-        if (user) {
-            const shortUrl = `https://xpto.com/${this.urlService.shortUrl(urlInput.url)}`;
-
-            while(true) {
-                try {
-                    return await this.urlService.createUrl(user, urlInput.url, shortUrl);
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-
+        if (!user) {
+            throw new NotFoundException();
         }
 
-        throw new NotFoundException();
+        return this.urlService.createUrl(user, urlInput.url);
     }
 
     @Get(':userId/stats')
@@ -49,13 +42,6 @@ export class UsersController {
             throw new NotFoundException();
         }
 
-        const { topUrls, hits, urlCount } = await this.urlService.getSummaryByUser(user);
-
-        return {
-            userId,
-            hits,
-            urlCount,
-            topUrls
-        };
+        return this.urlService.getSummaryByUser(user);
     }
 }

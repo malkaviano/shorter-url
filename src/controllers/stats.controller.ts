@@ -20,6 +20,6 @@ export class StatsController {
 
     @Get()
     public async getStats() {
-        return await this.urlService.getSummary();
+        return this.urlService.getSummary();
     }
 }
