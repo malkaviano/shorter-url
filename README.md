@@ -1,6 +1,8 @@
 # url-shortener
 Programming Test
 
+[![CodeFactor](https://www.codefactor.io/repository/github/malkaviano/shorter-url/badge)](https://www.codefactor.io/repository/github/malkaviano/shorter-url)
+
 Environment:
 - HOST
 - PORT
