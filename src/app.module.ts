@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { UserModule } from './modules/user.module';
 import { UrlModule } from './modules/url.module';
 import { StatsModule } from './modules/stats.module';
+import { RepositoryModule } from './modules/repository.module';
+import { ShortenerModule } from './modules/shortener.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { StatsModule } from './modules/stats.module';
     UserModule,
     UrlModule,
     StatsModule,
+    RepositoryModule,
+    ShortenerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

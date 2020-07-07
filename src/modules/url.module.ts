@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UrlsController } from '../controllers/urls.controller';
 import { UrlService } from '../services/url.service';
-import { UrlRepository } from '../repositories/url.repository';
+import { RepositoryModule } from './repository.module';
+import { ShortenerModule } from './shortener.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UrlRepository])],
+  imports: [RepositoryModule, ShortenerModule],
   controllers: [UrlsController],
   providers: [UrlService],
   exports:[UrlService],

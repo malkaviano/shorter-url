@@ -1,23 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { when, mock, instance, anything } from 'ts-mockito';
+import { when, mock, instance } from 'ts-mockito';
 
 import { UserService } from './user.service';
-import { UserRepository } from '../repositories/user.repository';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { RepositoryService } from './repository.service';
+import { User } from '../entities/user.entity';
+import { UserIdOutput } from '../dtos/user-id.output';
 
 describe('UserService', () => {
   let service: UserService;
-  let mockedRepository: UserRepository = mock(UserRepository);
+  let mockedRepository: RepositoryService = mock(RepositoryService);
 
   beforeEach(async () => {
-    let repository: UserRepository = instance(mockedRepository);
+    let repository: RepositoryService = instance(mockedRepository);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
         {
-          provide: UserRepository,
+          provide: RepositoryService,
           useValue: repository,
         },
       ],
@@ -33,12 +34,8 @@ describe('UserService', () => {
   describe('#deleteUser', () => {
     describe('when user is found', () => {
       it('returns true', async () => {
-        when(mockedRepository.delete(anything())).thenResolve(
-          {
-            raw: [],
-            affected: 1
-          }
-        );
+        when(mockedRepository.findUser('xpto')).thenResolve({ id: 1, userId: 'xpto', urls: [] });
+        when(mockedRepository.deleteUser('xpto')).thenResolve(true);
 
         await expect(service.deleteUser('xpto')).resolves.toEqual(true);
       });
@@ -46,33 +43,9 @@ describe('UserService', () => {
 
     describe('when user is not found', () => {
       it('returns false', async () => {
-        when(mockedRepository.delete(anything())).thenResolve(
-          {
-            raw: [],
-            affected: 0
-          }
-        );
+        when(mockedRepository.deleteUser('notfound')).thenResolve(false);
 
         await expect(service.deleteUser('notfound')).resolves.toEqual(false);
-      });
-
-      it('returns false', async () => {
-        when(mockedRepository.delete(anything())).thenResolve(
-          {
-            raw: [],
-            affected: null,
-          }
-        );
-
-        await expect(service.deleteUser('null')).resolves.toEqual(false);
-      });
-
-      it('returns false', async () => {
-        when(mockedRepository.delete(anything())).thenReject(
-          new Error("something went wrong FDP")
-        );
-
-        await expect(service.deleteUser('throws')).resolves.toEqual(false);
       });
     });
   });
@@ -80,46 +53,45 @@ describe('UserService', () => {
   describe('#getUser', () => {
     describe('when user exists', () => {
       it('returns user', async () => {
-        when(mockedRepository.findOne(anything())).thenResolve(
-          {
-            id: 1,
-            userId: 'someuser',
-            urls: []
-          }
-        );
-
-        await expect(service.getUser('someuser')).resolves.toEqual({
+        const expected: User = {
           id: 1,
           userId: 'someuser',
           urls: []
-        });
+        };
+
+        when(mockedRepository.findUser('someuser')).thenResolve(expected);
+
+        await expect(service.getUser('someuser')).resolves.toEqual(expected);
+      });
+    });
+
+    describe('when user does not exist', () => {
+      it('returns null', async () => {
+        when(mockedRepository.findUser('notfound')).thenResolve(null);
+
+        await expect(service.getUser('notfound')).resolves.toEqual(null);
       });
     });
   });
 
   describe('#createUser', () => {
-    describe('when user exists', () => {
-      it('throws', async () => {
-        when(mockedRepository.save(anything())).thenReject(
-          new Error("user already exists")
-        );
+    describe('when userId already exists', () => {
+      it('returns null', async () => {
+        when(mockedRepository.createUser('someuser')).thenResolve(null);
 
-        await expect(service.createUser('someuser')).rejects.toThrow();
+        await expect(service.createUser('someuser')).resolves.toEqual(null);
       });
     });
 
-    describe('when new user', () => {
-      it('throws', async () => {
-        when(mockedRepository.save(anything())).thenResolve(
-          {
-            id: 1,
-            userId: 'someuser'
-          }
-        );
+    describe('when new userId', () => {
+      const userId: UserIdOutput = {
+        userId: 'someuser'
+      };
 
-        await expect(service.createUser('someuser')).resolves.toEqual({
-          userId: 'someuser'
-        });
+      it('returns User', async () => {
+        when(mockedRepository.createUser('someuser')).thenResolve(userId);
+
+        await expect(service.createUser('someuser')).resolves.toEqual(userId);
       });
     });
   });
