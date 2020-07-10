@@ -4,7 +4,7 @@ import { StatsController } from '../controllers/stats.controller';
 import { UrlModule } from './url.module';
 
 @Module({
-  imports:[UrlModule],
+  imports:[UrlModule.forComponent()],
   controllers: [StatsController]
 })
 export class StatsModule {}

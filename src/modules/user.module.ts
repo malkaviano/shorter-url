@@ -7,7 +7,7 @@ import { RepositoryModule } from './repository.module';
 import { UrlModule } from './url.module';
 
 @Module({
-  imports: [RepositoryModule, UrlModule],
+  imports: [RepositoryModule.forComponent(), UrlModule.forComponent()],
   controllers: [UserController, UsersController],
   providers: [UserService],
 })

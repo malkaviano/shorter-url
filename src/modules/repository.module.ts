@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, DynamicModule } from '@nestjs/common';
 import { RepositoryService } from '../services/repository.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -11,6 +11,14 @@ import { UserRepository } from '../repositories/user.repository';
     TypeOrmModule.forFeature([UserRepository])
   ],
   providers: [RepositoryService],
-  exports: [RepositoryService]
+  exports: []
 })
-export class RepositoryModule {}
+export class RepositoryModule {
+
+  public static forComponent(): DynamicModule {
+    return {
+      module: RepositoryModule,
+      exports: [RepositoryService],
+    }
+  }
+}

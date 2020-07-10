@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, DynamicModule } from '@nestjs/common';
 
 import { UrlsController } from '../controllers/urls.controller';
 import { UrlService } from '../services/url.service';
@@ -6,9 +6,15 @@ import { RepositoryModule } from './repository.module';
 import { ShortenerModule } from './shortener.module';
 
 @Module({
-  imports: [RepositoryModule, ShortenerModule],
+  imports: [RepositoryModule.forComponent(), ShortenerModule.forComponent()],
   controllers: [UrlsController],
   providers: [UrlService],
-  exports:[UrlService],
 })
-export class UrlModule {}
+export class UrlModule {
+  public static forComponent(): DynamicModule {
+    return {
+      module: UrlModule,
+      exports:[UrlService],
+    }
+  }
+}
