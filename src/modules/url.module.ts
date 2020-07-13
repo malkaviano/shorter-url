@@ -1,9 +1,9 @@
 import { Module, DynamicModule } from '@nestjs/common';
 
-import { UrlsController } from '../controllers/urls.controller';
-import { UrlService } from '../services/url.service';
-import { RepositoryModule } from './repository.module';
-import { ShortenerModule } from './shortener.module';
+import { UrlsController } from '@controllers/urls.controller';
+import { UrlService } from '@services/url.service';
+import { RepositoryModule } from '@modules/repository.module';
+import { ShortenerModule } from '@modules/shortener.module';
 
 @Module({
   imports: [RepositoryModule.forComponent(), ShortenerModule.forComponent()],

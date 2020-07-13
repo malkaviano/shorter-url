@@ -1,9 +1,9 @@
 import { Module, DynamicModule } from '@nestjs/common';
-import { RepositoryService } from '../services/repository.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UrlRepository } from '../repositories/url.repository';
-import { UserRepository } from '../repositories/user.repository';
+import { RepositoryService } from '@services/repository.service';
+import { UrlRepository } from '@repositories/url.repository';
+import { UserRepository } from '@repositories/user.repository';
 
 @Module({
   imports: [

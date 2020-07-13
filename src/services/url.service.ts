@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
-import { Url } from '../entities/url.entity';
-import { User } from '../entities/user.entity';
-import { UrlOutput } from '../dtos/url.output';
-import { SummaryOutput } from '../dtos/summary.output';
+import { Url } from '@entities/url.entity';
+import { User } from '@entities/user.entity';
+import { UrlOutput } from '@dtos/url.output';
+import { SummaryOutput } from '@dtos/summary.output';
 import { RepositoryService } from './repository.service';
-import { UrlSingleOutput } from '../dtos/url-single.output';
-import { ShortenerService } from './shortener.service';
+import { UrlSingleOutput } from '@dtos/url-single.output';
+import { ShortenerService } from '@services/shortener.service';
 
 @Injectable()
 export class UrlService {
