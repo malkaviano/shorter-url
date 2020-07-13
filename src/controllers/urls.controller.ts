@@ -1,6 +1,6 @@
 import { Controller, Delete, Param, NotFoundException, Get, Redirect } from '@nestjs/common';
 
-import { UrlService } from '../services/url.service';
+import { UrlService } from '@services/url.service';
 
 @Controller('urls')
 export class UrlsController {

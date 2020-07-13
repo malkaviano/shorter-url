@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Index } from 'typeorm';
 
-import { Url } from './url.entity'
+import { Url } from '@entities/url.entity'
 
 @Entity()
 export class User {

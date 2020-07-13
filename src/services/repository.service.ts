@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UserRepository } from '../repositories/user.repository';
-import { UrlRepository } from '../repositories/url.repository';
-import { Url } from '../entities/url.entity';
-import { User } from '../entities/user.entity';
-import { SummaryOutput } from '../dtos/summary.output';
-import { UserIdOutput } from '../dtos/user-id.output';
-import { UrlOutput } from '../dtos/url.output';
+import { UserRepository } from '@repositories/user.repository';
+import { UrlRepository } from '@repositories/url.repository';
+import { Url } from '@entities/url.entity';
+import { User } from '@entities/user.entity';
+import { SummaryOutput } from '@dtos/summary.output';
+import { UserIdOutput } from '@dtos/user-id.output';
+import { UrlOutput } from '@dtos/url.output';
 
 @Injectable()
 export class RepositoryService {

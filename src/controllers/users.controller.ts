@@ -1,9 +1,9 @@
 import { Controller, Get, Param, NotFoundException, Post, Body, ConflictException } from '@nestjs/common';
 
-import { UserService } from '../services/user.service';
-import { UserInput } from '../dtos/user.input';
-import { UrlInput as UrlInput } from '../dtos/url.input';
-import { UrlService } from '../services/url.service';
+import { UserService } from '@services/user.service';
+import { UserInput } from '@dtos/user.input';
+import { UrlInput as UrlInput } from '@dtos/url.input';
+import { UrlService } from '@services/url.service';
 
 @Controller('users')
 export class UsersController {

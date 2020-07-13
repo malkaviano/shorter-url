@@ -1,4 +1,4 @@
-import { Url } from "../entities/url.entity";
+import { Url } from "@entities/url.entity";
 
 export interface SummaryOutput {
     userId: string,

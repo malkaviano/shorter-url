@@ -1,6 +1,6 @@
 import { Module, DynamicModule } from '@nestjs/common';
 
-import { ShortenerService } from '../services/shortener.service';
+import { ShortenerService } from '@services/shortener.service';
 
 @Module({
   providers: [ShortenerService],

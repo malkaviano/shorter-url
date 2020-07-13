@@ -1,7 +1,7 @@
 import { Controller, Get, Param, NotFoundException } from '@nestjs/common';
 
-import { UrlService } from '../services/url.service';
-import { Url } from '../entities/url.entity';
+import { UrlService } from '@services/url.service';
+import { Url } from '@entities/url.entity';
 
 @Controller('stats')
 export class StatsController {

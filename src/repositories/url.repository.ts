@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 
-import { Url } from '../entities/url.entity';
+import { Url } from '@entities/url.entity';
 
 
 @EntityRepository(Url)
