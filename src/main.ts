@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as helmet from 'helmet';
+import * as rateLimit from 'express-rate-limit';
 
 import { AppModule } from './modules/app.module';
 
@@ -11,6 +13,17 @@ async function bootstrap() {
     whitelist: true,
     transform: true,
   }  ));
+
+  app.use(helmet());
+
+  app.enableCors();
+
+  app.use(
+    rateLimit({
+      windowMs: 60 * 1000,
+      max: 5,
+    }),
+  );
 
   const options = new DocumentBuilder()
     .setTitle('Url Shortener')
