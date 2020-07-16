@@ -22,7 +22,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "docker": "npx ts-node node_modules/.bin/typeorm migration:run && node dist/main.js"
+    "docker": "npx ts-node node_modules/.bin/typeorm migration:run && node dist/main.js",
+    "pm2": "npx ts-node node_modules/.bin/typeorm migration:run && pm2-runtime dist/main.js -i 0"
   },
   "dependencies": {
     "@nestjs/common": "^6.7.2",
