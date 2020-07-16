@@ -20,7 +20,7 @@ Using defaults, if you change them remember to pass them to docker server.
 
 Running locally
 
-- Global install: sudo npm i -g typescript, ts-node, typeorm, @nestjs/cli
+- Global install: sudo npm i -g typescript, ts-node, typeorm, @nestjs/cli, pm2@latest
 
 - npm install
 
