@@ -11,6 +11,6 @@ export class User {
   @Column({ nullable: false, length: '10' })
   userId: string;
 
-  @OneToMany(type => Url, url => url.user)
+  @OneToMany(() => Url, url => url.user)
   urls: Url[];
 }
