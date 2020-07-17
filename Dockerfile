@@ -7,6 +7,7 @@ COPY . /app
 WORKDIR /app
 
 # install and cache app dependencies
+RUN npm i -g pm2@latest
 RUN npm install && npm run build
 
-CMD ["npm","run","docker"]
+CMD ["npm","run","pm2"]
