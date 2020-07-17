@@ -4,7 +4,7 @@ import { Url } from '@entities/url.entity';
 import { User } from '@entities/user.entity';
 import { UrlOutput } from '@dtos/url.output';
 import { SummaryOutput } from '@dtos/summary.output';
-import { RepositoryService } from './repository.service';
+import { RepositoryService } from '@services/repository.service';
 import { UrlSingleOutput } from '@dtos/url-single.output';
 import { ShortenerService } from '@services/shortener.service';
 
@@ -35,7 +35,7 @@ export class UrlService {
         return result;
     }
 
-    public async getSummaryByUser(user: User, limit: number = 10): Promise<SummaryOutput | { error: any }> {
+    public async getSummaryByUser(user: User, limit = 10): Promise<SummaryOutput | Error> {
         try {
             const { topUrls, hits, urlCount } = await this.repository.userSummary(user.id, limit);
 
@@ -46,7 +46,7 @@ export class UrlService {
                 topUrls
             };
         } catch (error) {
-            return { error };
+            return Error(error);
         }
     }
 
@@ -82,7 +82,7 @@ export class UrlService {
         return await this.repository.deleteUrl(id);
     }
 
-    public getSummary(limit: number = 10): Promise<SummaryOutput> {
+    public getSummary(limit = 10): Promise<SummaryOutput> {
         return this.repository.urlSummary(limit);
     }
 }
