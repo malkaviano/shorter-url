@@ -9,10 +9,10 @@ import { UserIdOutput } from '../dtos/user-id.output';
 
 describe('UserService', () => {
   let service: UserService;
-  let mockedRepository: RepositoryService = mock(RepositoryService);
+  const mockedRepository: RepositoryService = mock(RepositoryService);
 
   beforeEach(async () => {
-    let repository: RepositoryService = instance(mockedRepository);
+    const repository: RepositoryService = instance(mockedRepository);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
