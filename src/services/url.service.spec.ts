@@ -5,17 +5,16 @@ import { mock, instance, when, anything } from 'ts-mockito';
 import { UrlService } from './url.service';
 import { User } from '../entities/user.entity';
 import { RepositoryService } from './repository.service';
-import { Url } from '../entities/url.entity';
 import { UrlOutput } from '../dtos/url.output';
 import { ShortenerService } from './shortener.service';
 
 describe('UrlService', () => {
   let service: UrlService;
-  let mockedRepository: RepositoryService = mock(RepositoryService);
-  let mockedShortner: ShortenerService = mock(ShortenerService);
+  const mockedRepository: RepositoryService = mock(RepositoryService);
+  const mockedShortner: ShortenerService = mock(ShortenerService);
 
   beforeEach(async () => {
-    when(mockedShortner.generateSegment(anything())).thenReturn('abcdefgh');
+    when(mockedShortner.generateSegment()).thenReturn('abcdefgh');
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -40,14 +39,6 @@ describe('UrlService', () => {
 
   describe('#createUrl', () => {
     it('returns Url created', async () => {
-        const obj: Url = {
-          id: 0,
-          url: 'http://xpto.com/blahblahblah',
-          shortUrl: 'http://xpto.com/abcdefgh',
-          hits: 0,
-          user: new User()
-        };
-
         const expected: UrlOutput = {
           id: 1,
           url: 'http://xpto.com/blahblahblah',

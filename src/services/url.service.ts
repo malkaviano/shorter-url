@@ -27,7 +27,7 @@ export class UrlService {
         let result = null;
 
         while (!result) {
-            obj.shortUrl = `https://xpto.com/${this.shortner.generateSegment(url)}`;
+            obj.shortUrl = `https://xpto.com/${this.shortner.generateSegment()}`;
 
             result = await this.repository.saveUrl(obj);
         }
