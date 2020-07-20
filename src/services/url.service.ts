@@ -79,7 +79,7 @@ export class UrlService {
             return false;
         }
 
-        return await this.repository.deleteUrl(id);
+        return this.repository.deleteUrl(id);
     }
 
     public getSummary(limit = 10): Promise<SummaryOutput> {
