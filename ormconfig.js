@@ -26,7 +26,7 @@ const config = {
   synchronize: false,
   migrationsRun: false,
   cli: {
-    migrationsDir: "migrations",
+    migrationsDir: "src/migrations",
   },
 };
 
