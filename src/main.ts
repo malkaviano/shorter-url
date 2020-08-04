@@ -3,11 +3,16 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
+import { WinstonModule } from 'nest-winston';
 
 import { AppModule } from '@modules/app.module';
 
+import { winstonConfig } from './configs/winston.config';
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const logger = WinstonModule.createLogger(winstonConfig);
+
+  const app = await NestFactory.create(AppModule, { logger });
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
@@ -21,7 +26,7 @@ async function bootstrap() {
   app.use(
     rateLimit({
       windowMs: 60 * 1000,
-      max: 10,
+      max: 50,
     }),
   );
 
