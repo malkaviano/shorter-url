@@ -63,4 +63,5 @@
         "promise/valid-params": "warn",
         "no-return-await": "error"
     }
+    "ignorePatterns": ["**/migrations/*.ts"]
 }
