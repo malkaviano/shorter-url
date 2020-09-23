@@ -60,7 +60,8 @@
         "promise/avoid-new": "warn",
         "promise/no-new-statics": "error",
         "promise/no-return-in-finally": "warn",
-        "promise/valid-params": "warn"
-    },
+        "promise/valid-params": "warn",
+        "no-return-await": "error"
+    }
     "ignorePatterns": ["**/migrations/*.ts"]
 }
